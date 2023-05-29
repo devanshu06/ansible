@@ -5,8 +5,8 @@
 
   vars:
     mongodb_version: "4.4"  # Replace with the desired MongoDB version
-    mongodb_keyserver: "keyserver.ubuntu.com"
-    mongodb_keyid: "2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5"
+    #mongodb_keyserver: "keyserver.ubuntu.com"
+    #mongodb_keyid: "2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5"
     mongodb_repo: "deb [arch=amd64,arm64] https://repo.mongodb.org/apt/ubuntu {{ ansible_distribution_release }}/mongodb-org/{{ mongodb_version }} multiverse"
   tasks:
     - name: Import MongoDB GPG key
