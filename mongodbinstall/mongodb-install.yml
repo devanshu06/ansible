@@ -1,0 +1,42 @@
+---
+- name: Install MongoDB
+  hosts: database
+  become: yes
+
+  vars:
+    mongodb_version: "4.4"  # Replace with the desired MongoDB version
+    mongodb_keyserver: "keyserver.ubuntu.com"
+    mongodb_keyid: "2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5"
+    mongodb_repo: "deb [arch=amd64,arm64] https://repo.mongodb.org/apt/ubuntu {{ ansible_distribution_release }}/mongodb-org/{{ mongodb_version }} multiverse"
+  tasks:
+    - name: Import MongoDB GPG key
+      apt_key:
+        url: "https://www.mongodb.org/static/pgp/server-{{ mongodb_version }}.asc"
+        state: present
+
+    - name: Add mongo sources list
+      lineinfile: >
+        line="{{ mongodb_repo }}"
+        dest=/etc/apt/sources.list.d/mongodb-{{ mongodb_version }}.list
+        state=present
+        create=yes
+
+
+    # - name: Add MongoDB repository
+    #   apt_repository:
+    #     filename: '/etc/apt/sources.list.d/mongodb-org-{{ mongodb_version }}.list'
+    #     repo: "{{ mongodb_repo }}"
+    #     state: present
+    #     update_cache: true
+
+    - name: Install MongoDB packages
+      apt:
+        name: mongodb-org
+        state: present
+        update_cache: yes
+
+    - name: Start MongoDB service
+      service:
+        name: mongod
+        state: started
+        enabled: yes
